@@ -1,0 +1,13 @@
+[package]
+name = "serum-pool-schema"
+version = "0.1.0"
+authors = ["Sebastian Conybeare <sebastian@projectserum.com>"]
+edition = "2018"
+
+[dependencies]
+borsh = "0.7.1"
+solana-program = "1.4.4"
+
+[[bin]]
+name = "print-schema"
+path = "src/print-schema.rs"
