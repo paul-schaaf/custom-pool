@@ -42,6 +42,8 @@ pub struct PoolContext<'a, 'b> {
 
     /// Any additional accounts that were passed into the instruction.
     pub custom_accounts: &'a [AccountInfo<'b>],
+
+    pub custom_data: Option<Vec<u8>>
 }
 
 pub struct UserAccounts<'a, 'b> {
@@ -80,6 +82,7 @@ impl<'a, 'b> PoolContext<'a, 'b> {
             spl_token_program: None,
             account_params: None,
             custom_accounts: &[],
+            custom_data: None
         };
 
         check_account_address(context.pool_token_mint, &state.pool_token_mint)?;
@@ -122,7 +125,10 @@ impl<'a, 'b> PoolContext<'a, 'b> {
                     state.account_params.len(),
                 )?);
             }
-            PoolRequestInner::Initialize(_) => {
+            PoolRequestInner::Initialize(init_request) => {
+                if !init_request.custom_data.is_empty() {
+                    context.custom_data = Some(init_request.custom_data.clone());
+                }
                 let rent_sysvar_account = next_account_info(accounts_iter)?;
                 if rent_sysvar_account.key != &rent::ID {
                     info!("Incorrect rent sysvar account");
