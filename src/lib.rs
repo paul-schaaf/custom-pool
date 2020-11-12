@@ -44,6 +44,7 @@ pub fn pool_entrypoint<P: pool::Pool>(
     accounts: &[AccountInfo],
     instruction_data: &[u8],
 ) -> ProgramResult {
+    info!("Pool Entrypoint");
     if instruction_data.len() >= 8 {
         let tag_bytes = array_ref![instruction_data, 0, 8];
         if u64::from_le_bytes(*tag_bytes) == PoolRequestTag::TAG_VALUE {
